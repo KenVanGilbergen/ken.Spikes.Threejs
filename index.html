@@ -147,11 +147,17 @@ layout: default
     var hallSleepingDoor = Door(10 + 332 + 10 + 65 + 92 + 49, 10 + 430 + 10 + 177, 92, true);
     scene.add(MakeHole(MakeHole(hallNorthWall,hallBathroomDoor), hallSleepingDoor));
 
-    var sleepingSouthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10, 10 + 430 + 10 + 177, 280 + 5 + 126 + 10, true);
+    var sleepingSouthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10, 10 + 430 + 10 + 177, 274 + 5 + 126 + 10, true);
     scene.add(sleepingSouthWall);
+    var sleepingEastWall = SupportWall(10 + 332 + 10 + 10 + 309 + 274 + 5 + 126 + 10, 10 + 430 + 10 + 177, 10 + 281 + 10, false);
+    scene.add(sleepingEastWall);
+    var sleepingNorthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10 - 101, 10 + 430 + 10 + 177 + 281 + 10, 375 + 5 + 126, true);
+    scene.add(sleepingNorthWall);
 
     var bathroomEastWall = SupportWall(10 + 332 + 10, 10 + 430 + 10 + 177, 10 + 293 + 10, false);
     scene.add(bathroomEastWall);
+    var bathroomNorthWall = SupportWall(10 + 332 + 10, 10 + 430 + 10 + 177 + 281 + 10, 10 + 187 + 5, true);
+    scene.add(bathroomNorthWall);
 
 
 </script>
