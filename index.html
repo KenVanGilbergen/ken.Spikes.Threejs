@@ -7,6 +7,9 @@ layout: default
 <script src="/vendor/THREEx.WindowResize.js"></script>
 <script src="/vendor/THREE.OrbitControls.js"></script>
 <script src="/vendor/ThreeBSP.js"></script>
+<script src="/vendor/DDSLoader.js"></script>
+<script src="/vendor/MTLLoader.js"></script>
+<script src="/vendor/OBJLoader.js"></script>
 <script>
     var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 
@@ -167,6 +170,34 @@ layout: default
     scene.add(camera);
     camera.position.set(-90, 1500, 0);
     //camera.lookAt(scene.position);
+</script>
+<script>
+    var onProgress = function (xhr) {
+        if (xhr.lengthComputable) {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            console.log(Math.round(percentComplete, 2) + '% downloaded');
+        }
+    };
+    var onError = function (xhr) { };
+    THREE.Loader.Handlers.add(/\.dds$/i, new THREE.DDSLoader());
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setBaseUrl('models/couch/');
+    mtlLoader.setPath('models/couch/');
+    mtlLoader.load('Couch.mtl', function (materials) {
+        materials.preload();
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.setPath('models/couch/');
+        objLoader.load('Couch.obj', function (object) {
+            object.position.x = 140;
+            object.position.y = 0;
+            object.position.z = 65;
+            object.scale.x = 50;
+            object.scale.y = 50;
+            object.scale.z = 50;
+            scene.add(object);
+        }, onProgress, onError);
+    });
 </script>
 <script>
     var renderer;
