@@ -59,10 +59,10 @@ layout: default
     //scene.add(roof);
 
     var loader = new THREE.TextureLoader();
-    var floorTexture = loader.load('/textures/floor-wood-light.jpg');
+    //var floorTexture = loader.load('/textures/floor-wood-light.jpg');
     //var floorTexture = loader.load('/textures/floor-wood-light-highres.jpg');
     //var floorTexture = loader.load('/textures/marble-white-highres.jpg');
-    //var floorTexture = loader.load('/textures/checkerboard.jpg');
+    var floorTexture = loader.load('/textures/checkerboard.jpg');
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set(10, 10);
     var floorMaterial = new THREE.MeshLambertMaterial({ map: floorTexture, side: THREE.DoubleSide });
@@ -95,14 +95,21 @@ layout: default
         }
         return wall;
     }
-    function SupportWall(roff, boff, length, rotate) {
-        return Wall(roff, 0, boff, length, 265, 10, rotate);
+    const wallHeight = 265;
+    const supportWallThickness = 10;
+    const fakeWallThickness = 5;
+    const windowHeight = 85;
+    const windowHeightOfFloor = 135;
+    function SupportWall(roff, boff, length, horizontal, insideMeasure) {
+        if (insideMeasure) length += 2 * supportWallThickness;
+        return Wall(roff, 0, boff, length, wallHeight, supportWallThickness, horizontal);
     }
-    function FakeWall(roff, boff, length, rotate) {
-        return Wall(roff, 0, boff, length, 265, 5, rotate);
+    function FakeWall(roff, boff, length, horizontal) {
+        return Wall(roff, 0, boff, length, wallHeight, fakeWallThickness, horizontal);
     }
-    function SupportWindow(roff, boff, length, rotate) {
-        return Wall(roff, 85, boff, length, 135, 10, rotate);
+    function SupportWindow(roff, boff, length, horizontal, insideMeasure) {
+        if (insideMeasure) length += supportWallThickness;
+        return Wall(roff, windowHeight, boff, length, windowHeightOfFloor, supportWallThickness, horizontal);
     }
     function SupportDoor(roff, boff, length, rotate) {
         return Wall(roff, 10, boff, length, 210, 10, rotate);
@@ -120,47 +127,49 @@ layout: default
         return result;
     }
 
-    var livingSouthWall = SupportWall(0, 0, 10 + 332 + 10, true);
-    var livingSouthWindow = SupportWindow(0, 0, 10 + 165, true);
-    var livingSouthDoor = SupportDoor(10 + 332 - 80 - 86, 0, 86, true);
-    scene.add(MakeHole(MakeHole(livingSouthWall, livingSouthWindow), livingSouthDoor));
-    var livingWestWall = SupportWall(0, 0, 10 + 521 + 10, false);
-    var livingWestWindow = SupportWindow(0, 0, 10 + 65, false);
-    var livingWestSecondWindow = SupportWindow(0, 265, 100, false);
-    var livingWestDoor = SupportDoor(0, 10 + 356, 86, false);
-    scene.add(MakeHole(MakeHole(MakeHole(livingWestWall, livingWestWindow),livingWestSecondWindow),livingWestDoor));
-    scene.add(SupportWall(0, 521 + 10, 65 + 10, true)); //living north wall
-    scene.add(SupportWall(10 + 332 + 10, 0, 10 + 430 + 10, false)); //living east wall
+    //var livingSouthWall = SupportWall(0, 0, 332, true, true);
+    //var livingSouthWindow = SupportWindow(0, 0, 165, true, true);
+    //var livingSouthDoor = SupportDoor(10 + 332 - 80 - 86, 0, 86, true);
+    //scene.add(MakeHole(MakeHole(livingSouthWall, livingSouthWindow), livingSouthDoor));
+    //var livingWestWall = SupportWall(0, 0, 10 + 521 + 10, false);
+    //var livingWestWindow = SupportWindow(0, 0, 10 + 65, false);
+    //var livingWestSecondWindow = SupportWindow(0, 265, 100, false);
+    //var livingWestDoor = SupportDoor(0, 10 + 356, 86, false);
+    //scene.add(MakeHole(MakeHole(MakeHole(livingWestWall, livingWestWindow),livingWestSecondWindow),livingWestDoor));
+    //var livingNorthWall = SupportWall(0, 521 + 10, 65 + 10, true);
+    //scene.add(livingNorthWall);
+    //var livingEastWall = SupportWall(10 + 332 + 10, 0, 10 + 430 + 10, false);
+    //scene.add(livingEastWall); 
 
-    var kitchenWestWall = SupportWall(10 + 65, 10 + 512 + 10, 180 + 10, false);
-    var kitchenWestWindow = SupportWindow(10 + 65, 10 + 512 + 10 + 110, 180 + 10 - 110, false);
-    scene.add(MakeHole(kitchenWestWall, kitchenWestWindow));
-    var kitchenNorthWall = SupportWall(10 + 65, 10 + 512 + 10 + 180, 10 + 181, true);
-    var kitchenNorthWindow = SupportWindow(10 + 65, 10 + 512 + 10 + 180, 40, true);
-    scene.add(MakeHole(kitchenNorthWall,kitchenNorthWindow));
-    scene.add(Wall(10 + 65 + 10 + 181, 0, 10 + 512 + 10 + 180 - 83, 98 + 10, 265, 83 + 10, true)); //kitchen air vent
+    //var kitchenWestWall = SupportWall(10 + 65, 10 + 512 + 10, 180 + 10, false);
+    //var kitchenWestWindow = SupportWindow(10 + 65, 10 + 512 + 10 + 110, 180 + 10 - 110, false);
+    //scene.add(MakeHole(kitchenWestWall, kitchenWestWindow));
+    //var kitchenNorthWall = SupportWall(10 + 65, 10 + 512 + 10 + 180, 10 + 181, true);
+    //var kitchenNorthWindow = SupportWindow(10 + 65, 10 + 512 + 10 + 180, 40, true);
+    //scene.add(MakeHole(kitchenNorthWall,kitchenNorthWindow));
+    //scene.add(Wall(10 + 65 + 10 + 181, 0, 10 + 512 + 10 + 180 - 83, 98 + 10, 265, 83 + 10, true)); //kitchen air vent
 
-    var hallSouthWall = SupportWall(10 + 332 + 10, 10 + 430, 10 + 309 + 10, true);
-    scene.add(hallSouthWall);
-    var hallEastWall = SupportWall(10 + 332 + 10 + 309 + 10, 10 + 430, 10 + 177 + 10, false);
-    var hallEastDoor = FrontDoor(10 + 332 + 10 + 309 + 10, 10 + 430 + 10 + 64, 100, false);
-    scene.add(MakeHole(hallEastWall, hallEastDoor));
-    var hallNorthWall = FakeWall(10 + 332 + 10, 10 + 430 + 10 + 177, 10 + 309 + 10, true);
-    var hallBathroomDoor = Door(10 + 332 + 10 + 65, 10 + 430 + 10 + 177, 92, true);
-    var hallSleepingDoor = Door(10 + 332 + 10 + 65 + 92 + 49, 10 + 430 + 10 + 177, 92, true);
-    scene.add(MakeHole(MakeHole(hallNorthWall,hallBathroomDoor), hallSleepingDoor));
+    //var hallSouthWall = SupportWall(10 + 332 + 10, 10 + 430, 10 + 309 + 10, true);
+    //scene.add(hallSouthWall);
+    //var hallEastWall = SupportWall(10 + 332 + 10 + 309 + 10, 10 + 430, 10 + 177 + 10, false);
+    //var hallEastDoor = FrontDoor(10 + 332 + 10 + 309 + 10, 10 + 430 + 10 + 64, 100, false);
+    //scene.add(MakeHole(hallEastWall, hallEastDoor));
+    //var hallNorthWall = FakeWall(10 + 332 + 10, 10 + 430 + 10 + 177, 10 + 309 + 10, true);
+    //var hallBathroomDoor = Door(10 + 332 + 10 + 65, 10 + 430 + 10 + 177, 92, true);
+    //var hallSleepingDoor = Door(10 + 332 + 10 + 65 + 92 + 49, 10 + 430 + 10 + 177, 92, true);
+    //scene.add(MakeHole(MakeHole(hallNorthWall,hallBathroomDoor), hallSleepingDoor));
 
-    var sleepingSouthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10, 10 + 430 + 10 + 177, 274 + 5 + 126 + 10, true);
-    scene.add(sleepingSouthWall);
-    var sleepingEastWall = SupportWall(10 + 332 + 10 + 10 + 309 + 274 + 5 + 126 + 10, 10 + 430 + 10 + 177, 10 + 281 + 10, false);
-    scene.add(sleepingEastWall);
-    var sleepingNorthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10 - 101, 10 + 430 + 10 + 177 + 281 + 10, 375 + 5 + 126, true);
-    scene.add(sleepingNorthWall);
+    //var sleepingSouthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10, 10 + 430 + 10 + 177, 274 + 5 + 126 + 10, true);
+    //scene.add(sleepingSouthWall);
+    //var sleepingEastWall = SupportWall(10 + 332 + 10 + 10 + 309 + 274 + 5 + 126 + 10, 10 + 430 + 10 + 177, 10 + 281 + 10, false);
+    //scene.add(sleepingEastWall);
+    //var sleepingNorthWall = SupportWall(10 + 332 + 10 + 10 + 309 + 10 - 101, 10 + 430 + 10 + 177 + 281 + 10, 375 + 5 + 126, true);
+    //scene.add(sleepingNorthWall);
 
-    var bathroomEastWall = SupportWall(10 + 332 + 10, 10 + 430 + 10 + 177, 10 + 293 + 10, false);
-    scene.add(bathroomEastWall);
-    var bathroomNorthWall = SupportWall(10 + 332 + 10, 10 + 430 + 10 + 177 + 281 + 10, 10 + 187 + 5, true);
-    scene.add(bathroomNorthWall);
+    //var bathroomEastWall = SupportWall(10 + 332 + 10, 10 + 430 + 10 + 177, 10 + 293 + 10, false);
+    //scene.add(bathroomEastWall);
+    //var bathroomNorthWall = SupportWall(10 + 332 + 10, 10 + 430 + 10 + 177 + 281 + 10, 10 + 187 + 5, true);
+    //scene.add(bathroomNorthWall);
 
 
 </script>
@@ -178,23 +187,35 @@ layout: default
             console.log(Math.round(percentComplete, 2) + '% downloaded');
         }
     };
-    var onError = function (xhr) { };
+    var onError = function (xhr) { console.log(xhr); };
     THREE.Loader.Handlers.add(/\.dds$/i, new THREE.DDSLoader());
     var mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setBaseUrl('models/couch/');
-    mtlLoader.setPath('models/couch/');
-    mtlLoader.load('Couch.mtl', function (materials) {
+    //const modelPath = 'models/couch/';
+    //const modelMaterial = 'Couch.mtl';
+    //const modelObj = 'Couch.obj'
+    const modelPath = 'models/blender/';
+    const modelObj = 'monkey.obj'
+    const modelMaterial = 'monkey.mtl';
+    const modelScale = 100;
+    mtlLoader.setBaseUrl(modelPath);
+    mtlLoader.setPath(modelPath);
+    mtlLoader.load(modelMaterial, function (materials) {
         materials.preload();
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
-        objLoader.setPath('models/couch/');
-        objLoader.load('Couch.obj', function (object) {
-            object.position.x = 140;
+        objLoader.setPath(modelPath);
+        objLoader.load(modelObj, function (object) {
+            object.position.x = 0;
             object.position.y = 0;
-            object.position.z = 65;
-            object.scale.x = 50;
-            object.scale.y = 50;
-            object.scale.z = 50;
+            object.position.z = 0;
+            //object.position.x = 140;
+            //object.position.y = 0;
+            //object.position.z = 65;
+            object.scale.x = modelScale;
+            object.scale.y = modelScale;
+            object.scale.z = modelScale;
+            //object.rotateX(-90 * (Math.PI / 180));
+            //object.rotateZ(-90 * (Math.PI / 180));
             scene.add(object);
         }, onProgress, onError);
     });
